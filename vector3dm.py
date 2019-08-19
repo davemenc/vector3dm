@@ -81,26 +81,17 @@ class Vector3dm:
 			v2 = v
 		x1,y1,z1 = v1.vals
 		x2,y2,z2 = v2.vals
-		return math.sqrt((x2-x2)**2 + (y2-y2)**2 + (z2-z2)**2)
+		return math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
 		
 	
-	def add_vectors(self,v):
+	def add(self,v):
 		# adds two vectors
 		# input: self and another vector of any type
 		# output a spherical vector which is the sum of the two 
 		return np.add(self.spherical_to_cartesian(), v.spherical_to_cartesian())
-		self.spherical_to_cartesian().vals
-		if false:
-			x=1
-		else:
-			x1,y1,z1 = self.vals
-		if v.type == "s":
-			x2,y2,z2 = v.spherical_to_cartesian().vals
-		else:
-			x2,y2,z2 = v.vals
-		return cartesian_to_spherical((x1+x2,y1+y2,z1+z2))
+		
 	
-	def sub_vectors(self,v): # self - v
+	def sub(self,v): # self - v
 		# subtracs v from self
 		# input: self and another vector of any type
 		# output a spherical vector which is self-v
@@ -114,21 +105,6 @@ class Vector3dm:
 			x2,y2,z2 = v.vals
 	
 		return cartesian_to_spherical((x1-x2,y1-y2,z1-z2))
-#distances are wrong
-#add_vectors
-#subtract vectors
-#from one one vecotr to another
-#cross
-#dot
-#multiply
-#vec
-#__Copy?
-#__neg__
-#scalar mult
-#division
-#normal
-#magnitute (origin (he uses **(.5))
-#ZERO constant
 
 
 if __name__ == "__main__":
@@ -208,4 +184,4 @@ if __name__ == "__main__":
 
 	print
 	print("________ADD_____________")
-	print("add",v3,v4,v3.add_vectors(v4))
+	print("add",v3,v4,v3.add(v4))
