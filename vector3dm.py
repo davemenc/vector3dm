@@ -5,6 +5,8 @@ class Vector3dm:
 	def __init__(self,a=None,b=None,c=None,type="s"):
 		assert type == "s" or type == "c","Expects spherical (s) or cartesian (c); vector is type {}".format(type)
 
+		# in spherical the order is r,theta,phi
+		# in cartesian it's x,yz
 		self.vals = [float(a),float(b),float(c)]
 		self.type = type # s==spherical, c==cartesian
 
@@ -19,7 +21,7 @@ class Vector3dm:
 		if self.type == "c":
 			return "x:{}, y:{}, z:{}, type c".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
 		elif self.type == "s":
-			return "r:{}, phi:{}, theta:{}, type s".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
+			return "r:{}, theta:{}, phi:{},  type s".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
 		else:
 			return "{},{},{}, type: {} (type may be invalid)".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2),self.type)
 		
@@ -31,8 +33,8 @@ class Vector3dm:
 		if self.type == "c":
 			return copy.copy(self)
 		assert self.type=="s","Expects spherical (s) or cartesian (c); vector is type {}".format(self.type)
-		r,phi,theta = self.vals
-		#print("s2c: r",r,"phi",phi,"theta",theta)
+		r,theta,phi = self.vals
+		#print("s2c: r",r,"theta",theta,"phi",phi)
 		x = r * math.sin(phi) * math.cos (theta)
 		y = r * math.sin(phi) * math.sin (theta)
 		z = r * math.cos(phi)
@@ -52,7 +54,7 @@ class Vector3dm:
 			r=0.000000001
 		phi = math.acos(float(z)/r)
 		theta = math.atan2(float(y),float(x))
-		return Vector3dm(r,phi,theta,"s")
+		return Vector3dm(r,theta,phi,"s")
 		
 	def origin_distance(self):
 		# Gets distance from origin
@@ -94,18 +96,39 @@ class Vector3dm:
 	def sub(self,v): # self - v
 		# subtracs v from self
 		# input: self and another vector of any type
-		# output a spherical vector which is self-v
-		if self.type == "s":
-			x1,y1,z1 = self.spherical_to_cartesian().vals
-		else:
-			x1,y1,z1 = self.vals
-		if v.type == "s":
-			x2,y2,z2 = v.spherical_to_cartesian().vals
-		else:
-			x2,y2,z2 = v.vals
+		# output a cartesion vector which is self-v
+		x1,y1,z1 = self.spherical_to_cartesian().vals
+		x2,y2,z2 = v.spherical_to_cartesian().vals
 	
-		return cartesian_to_spherical((x1-x2,y1-y2,z1-z2))
+		return Vector3dm(x1-x2,y1-y2,z1-z2,"c")
 
+	def mult(self,number):
+		# multiplies the vector self by number (a scalor)
+		# input: self and a number
+		# output: a cartesion vector with each element multiplied by number
+		x,y,z = self.sperical_to_cartesian().vals
+		return Vector3dm(x*number,y*number,z*number,"c")
+	
+	def neg(self):
+		# takes the negative of the vector self
+		# input: self (vector of any type)
+		# output: cartesion vector with each element negated
+		x,y,z = self.sperical_to_cartesian().vals
+		return Vector3dm(-x,-y,-z,"c")
+
+	def cross(self,v):
+		v1 = self.spherical_to_cartesian()
+		v2 = v.spherical_to_cartesian()
+		v3 = np.cross(v1,v2)
+		print("cross",type(v3),v3)
+		return Vector3dm(np.cross(v1, v2),"c")
+
+	def inner(self,v):
+		v1 = self.spherical_to_cartesian()
+		v2 = v.spherical_to_cartesian()
+		v3 = np.cross(v1,v2)
+		print("inner",type(v3),v3)
+		return Vector3dm(np.inner(v1, v2),"c")
 
 if __name__ == "__main__":
 	print()
@@ -123,6 +146,7 @@ if __name__ == "__main__":
 	v9 = Vector3dm(-100,math.pi,math.pi,"s")
 	va = Vector3dm(100,math.pi,math.pi,"s")
 	
+#	print(v7.cross(v8))
 	#tests
 	print(1,v1)
 	print(2,v2)
