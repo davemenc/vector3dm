@@ -28,9 +28,9 @@ import foobar
 v = vector3dm(x,y,z,"c")
 v2 = vector3dm(r,theta,phi,"s") # distance, azimuth, polar (as in mathematics)
 v3 = v.add(v2) # sum of v and v2
-d = v.distance(v2) # distance from v to v2
-v_c = v2.spherical_to_cartesian()
-v_s = v.cartesian_to_spherical()
+d = v.magnitude(v2) # distance from v to v2
+v_c = v2.convert_to_cartesian()
+v_s = v.convert_to_spherical()
 
 ```
 

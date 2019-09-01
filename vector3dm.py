@@ -18,7 +18,7 @@ class Vector3dm:
 		self.type = type # s==spherical, c==cartesian
 
 	def __array__(self):
-		v = self.spherical_to_cartesian() # makes a copy and converts to cartesian coords (even if already c type)
+		v = self.convert_to_cartesian() # makes a copy and converts to cartesian coords (even if already c type)
 		return np.array([v.vals[0], v.vals[1], v.vals[2]])
 
 	def __repr__(self):
@@ -32,7 +32,7 @@ class Vector3dm:
 		else:
 			return "{},{},{}, type: {} (type may be invalid)".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2),self.type)
 	
-	def spherical_to_cartesian(self):
+	def convert_to_cartesian(self):
 		# converts a spherical vector to a cartesian vector
 		# input: vector (self) of type spherical
 		# ouput: copy of vector converted to cartesian coordinates
@@ -47,7 +47,7 @@ class Vector3dm:
 		z = r * math.cos(phi)
 		return Vector3dm(x,y,z,"c")
 		
-	def cartesian_to_spherical(self):
+	def convert_to_spherical(self):
 		# converts a cartesian vector to a spherical vector
 		# input: vector (self) of type catesian
 		# output: copy ot vector converted to spherical coordinates
@@ -81,11 +81,11 @@ class Vector3dm:
 		if v is None:
 			return self.origin_distance()
 		if self.type=="s":
-			v1 = self.spherical_to_cartesian()
+			v1 = self.convert_to_cartesian()
 		else:
 			v1 = self
 		if v.type=="s":
-			v2 = v.spherical_to_cartesian()
+			v2 = v.convert_to_cartesian()
 		else:
 			v2 = v
 		x1,y1,z1 = v1.vals
@@ -97,15 +97,15 @@ class Vector3dm:
 		# adds two vectors
 		# input: self and another vector of any type
 		# output a vector which is the sum of the two 
-		np_vect = np.add(self.spherical_to_cartesian(), v.spherical_to_cartesian())
+		np_vect = np.add(self.convert_to_cartesian(), v.convert_to_cartesian())
 		return numpy_to_vector3dm(np_vect)
 	
 	def sub(self,v): # self - v
 		# subtracs v from self
 		# input: self and another vector of any type
 		# output a cartesion vector which is self-v
-		x1,y1,z1 = self.spherical_to_cartesian().vals
-		x2,y2,z2 = v.spherical_to_cartesian().vals
+		x1,y1,z1 = self.convert_to_cartesian().vals
+		x2,y2,z2 = v.convert_to_cartesian().vals
 	
 		return Vector3dm(x1-x2,y1-y2,z1-z2,"c")
 
@@ -113,26 +113,26 @@ class Vector3dm:
 		# multiplies the vector self by number (a scalor)
 		# input: self and a number
 		# output: a cartesion vector with each element multiplied by number
-		x,y,z = self.spherical_to_cartesian().vals
+		x,y,z = self.convert_to_cartesian().vals
 		return Vector3dm(x*number,y*number,z*number,"c")
 	
 	def neg(self):
 		# takes the negative of the vector self
 		# input: self (vector of any type)
 		# output: cartesion vector with each element negated
-		x,y,z = self.spherical_to_cartesian().vals
+		x,y,z = self.convert_to_cartesian().vals
 		return Vector3dm(-x,-y,-z,"c")
 
 	def cross(self,v):
-		v1 = self.spherical_to_cartesian()
-		v2 = v.spherical_to_cartesian()
+		v1 = self.convert_to_cartesian()
+		v2 = v.convert_to_cartesian()
 		v3 = np.cross(v1,v2)
 		print("cross",type(v3),v3)
 		return Vector3dm(np.cross(v1, v2),"c")
 
 	def inner(self,v):
-		v1 = self.spherical_to_cartesian()
-		v2 = v.spherical_to_cartesian()
+		v1 = self.convert_to_cartesian()
+		v2 = v.convert_to_cartesian()
 		v3 = np.cross(v1,v2)
 		print("inner",type(v3),v3)
 		return Vector3dm(np.inner(v1, v2),"c")
