@@ -2,7 +2,7 @@ import numpy as np
 import math
 import copy
 class Vector3dm:
-	def __init__(self,a=None,b=None,c=None,type="s"):
+	def __init__(self,a,b,c,type):
 		assert type == "s" or type == "c","Expects spherical (s) or cartesian (c); vector is type {}".format(type)
 
 		# in spherical the order is r,theta,phi
@@ -66,7 +66,7 @@ class Vector3dm:
 		x,y,z = self.vals
 		return math.sqrt(x**2 + y**2 + z**2)
 
-	def distance(self,v=None):
+	def magnitude(self,v=None):
 		# Gets distance from self to v or from self to origin
 		# input: any 1 or 2 vectors
 		# output: float scalar
@@ -130,6 +130,8 @@ class Vector3dm:
 		print("inner",type(v3),v3)
 		return Vector3dm(np.inner(v1, v2),"c")
 
+
+
 if __name__ == "__main__":
 	print()
 	print("______________________________________________________________________________________________________________")
@@ -160,51 +162,6 @@ if __name__ == "__main__":
 	print("a",va)
 	print("np",np.array(v1))
 
-	print
-	print("__________S2C___________")
-	print("s_to_c",v1,v1.spherical_to_cartesian())
-	print("s_to_c",v2,v2.spherical_to_cartesian())
-	print("s_to_c",v3,v3.spherical_to_cartesian())
-	print("s_to_c",v9,v9.spherical_to_cartesian())
-	print("s_to_c",va,va.spherical_to_cartesian())
-
-	print
-	print("__________C2S___________")
-	print("c_to_s",v1,v1.cartesian_to_spherical())
-	print("c_to_s",v2,v2.cartesian_to_spherical())
-	print("c_to_s",v3,v3.cartesian_to_spherical())
-	print("c_to_s",v4,v4.cartesian_to_spherical())
-	print("c_to_s",v5,v5.cartesian_to_spherical())
-	print("c_to_s",v6,v6.cartesian_to_spherical())
-	
-	print
-	print("_________O DIST____________")
-	print("origin_distance",v1,v1.origin_distance())
-	print("origin_distance",v2,v2.origin_distance())
-	print("origin_distance",v3,v3.origin_distance())
-	print("origin_distance",v4,v4.origin_distance())
-	print("origin_distance",v5,v5.origin_distance())
-	print("origin_distance",v6,v6.origin_distance())
-	print("origin_distance",v7,v7.origin_distance())
-
-	print
-	print("_________DEF DIST____________")
-	print("distance",v7,v7.distance())
-
-	print
-	print("_________0 DIST____________")
-	print("distance",v1,v1,v1.distance(v1))
-	print("distance",v2,v2,v2.distance(v2))
-	print("distance",v3,v3,v3.distance(v3))
-	
-	print
-	print("___________DIST__________")
-	print("distance 1-2 ",v1,v2,v1.distance(v2))
-	print("distance 1-3 ",v1,v3,v1.distance(v3))
-	print("distance 1-4 ",v1,v4,v1.distance(v4))
-	print("distance 2-3",v2,v3,v2.distance(v3))
-	print("distance 3-4",v3,v4,v3.distance(v4))
-	print("distance 4-5",v4,v5,v4.distance(v5))
 
 	print
 	print("________ADD_____________")

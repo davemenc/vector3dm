@@ -2,15 +2,16 @@ import  unittest
 import math
 from vector3dm import Vector3dm
 
-def compare_close(a,b): # compare a&b to within 1/100000
-	#print("compare_close",a,b,b-0.00001,b+0.00001)
-	return a >= b-0.00001 and a <= b+0.00001
-	#if a >= b-0.00001 and a <= b+0.00001:
+def compare_close(a,b): # compare a&b to within delta
+	delta = .000001
+	#print("compare_close"delta,,a,b,b-delta,b+delta)
+	return a >= b-delta and a <= b+delta
+	#if a >= b-delta and a <= b+delta1:
 	#	return True
 	#else:
 	#	return False
 
-class TestBasicFunction(unittest.TestCase):
+class TestVector3dm(unittest.TestCase):
 	# tests from https://www.math.utah.edu/lectures/math2210/9PostNotes.pdf
 	def test_spherical_to_cartesian(self):
 		r = 8
@@ -89,18 +90,32 @@ class TestBasicFunction(unittest.TestCase):
 		self.assertTrue(compare_close(theta,ttheta),"inversion2 #2 bad theta: is {} should be {}".format(theta,ttheta))
 		self.assertTrue(compare_close(phi,tphi),"inversion2 bad #2 phi: is {} should be {}".format(phi,tphi))
 		
+	def test_magnitude(self):
+		expected_mag = 18.78829423
+		v1 = Vector3dm(7,4,1,"c")
+		v2 = Vector3dm(13,18,-10,"c")
+		mag = v1.magnitude(v2)
+		self.assertTrue(compare_close(mag,expected_mag),"magnitude1 bad mag: is {} should be {}".format(mag,expected_mag))
+
+		expected_mag = 29.06888371
+		v1 = Vector3dm(-3,18,6,"c")
+		v2 = Vector3dm(8,-2,-12,"c")
+		mag = v1.magnitude(v2)
+		self.assertTrue(compare_close(mag,expected_mag),"magnitude2 bad mag: is {} should be {}".format(mag,expected_mag))
+
+		expected_mag = 23.53720459
+		v1 = Vector3dm(12,-19,7,"c")
 		
-		
+		mag = v1.magnitude()
+		self.assertTrue(compare_close(mag,expected_mag),"magnitude3 bad mag: is {} should be {}".format(mag,expected_mag))
+
+	def test_origin_distance(self):
+		expected_dist = 1.7320508075688772935274463415059
+		v1 = Vector3dm(-1,1,1,"c")	
+		#print("test_origin_distance",expected_dist,v1)
+		dist = v1.origin_distance()
+		#Sprint("dist",dist,"expected",expected_dist)
+		self.assertTrue(compare_close(dist,expected_dist),"origindist bad distance: is {} should be {}".format(dist,expected_dist))
 
 if __name__ == '__main__':
 	unittest.main()
-"""
-import math
-
-
-class TestVector3dm(unittest.TestCase):
-
-		
-if __name__ == "__main__":
-	unittest.main()
-"""
