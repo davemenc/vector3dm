@@ -1,6 +1,13 @@
 import numpy as np
 import math
 import copy
+
+def numpy_to_vector3dm(np_array):
+	# converts a numpy array of 3 elements in cartesion coordinates to a vector3dm
+	# input: numpy array (3 el, cartesian values)
+	# output: a vector3dm of catesian type
+	return Vector3dm(np_array[0],np_array[1],np_array[2],"c")
+	
 class Vector3dm:
 	def __init__(self,a,b,c,type):
 		assert type == "s" or type == "c","Expects spherical (s) or cartesian (c); vector is type {}".format(type)
@@ -24,7 +31,7 @@ class Vector3dm:
 			return "r:{}, theta:{}, phi:{},  type s".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
 		else:
 			return "{},{},{}, type: {} (type may be invalid)".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2),self.type)
-		
+	
 	def spherical_to_cartesian(self):
 		# converts a spherical vector to a cartesian vector
 		# input: vector (self) of type spherical
@@ -89,9 +96,9 @@ class Vector3dm:
 	def add(self,v):
 		# adds two vectors
 		# input: self and another vector of any type
-		# output a spherical vector which is the sum of the two 
-		return np.add(self.spherical_to_cartesian(), v.spherical_to_cartesian())
-		
+		# output a vector which is the sum of the two 
+		np_vect = np.add(self.spherical_to_cartesian(), v.spherical_to_cartesian())
+		return numpy_to_vector3dm(np_vect)
 	
 	def sub(self,v): # self - v
 		# subtracs v from self
@@ -106,14 +113,14 @@ class Vector3dm:
 		# multiplies the vector self by number (a scalor)
 		# input: self and a number
 		# output: a cartesion vector with each element multiplied by number
-		x,y,z = self.sperical_to_cartesian().vals
+		x,y,z = self.spherical_to_cartesian().vals
 		return Vector3dm(x*number,y*number,z*number,"c")
 	
 	def neg(self):
 		# takes the negative of the vector self
 		# input: self (vector of any type)
 		# output: cartesion vector with each element negated
-		x,y,z = self.sperical_to_cartesian().vals
+		x,y,z = self.spherical_to_cartesian().vals
 		return Vector3dm(-x,-y,-z,"c")
 
 	def cross(self,v):

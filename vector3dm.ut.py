@@ -114,8 +114,43 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(-1,1,1,"c")	
 		#print("test_origin_distance",expected_dist,v1)
 		dist = v1.origin_distance()
-		#Sprint("dist",dist,"expected",expected_dist)
+		#print("dist",dist,"expected",expected_dist)
 		self.assertTrue(compare_close(dist,expected_dist),"origindist bad distance: is {} should be {}".format(dist,expected_dist))
+	
+	def test_add(self):
+		expected_sum_x = -6
+		expected_sum_y = 13
+		expected_sum_z = -25
+		v1 = Vector3dm(13,-5,-20,"c")
+		v2 = Vector3dm(-19,18,-5,"c")
+		v3 = v1.add(v2)
+		x,y,z = v3.vals
+		self.assertTrue(compare_close(x,expected_sum_x),"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
+		self.assertTrue(compare_close(y,expected_sum_y),"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
+		self.assertTrue(compare_close(z,expected_sum_z),"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
+
+	def test_sub(self):
+		expected_sum_x = 10
+		expected_sum_y = -21
+		expected_sum_z = 9
+		v1 = Vector3dm(-9,-4,10,"c")
+		v2 = Vector3dm(-19,17,1,"c")
+		v3 = v1.sub(v2)
+		x,y,z = v3.vals
+		self.assertTrue(compare_close(x,expected_sum_x),"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
+		self.assertTrue(compare_close(y,expected_sum_y),"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
+		self.assertTrue(compare_close(z,expected_sum_z),"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
+
+	def test_neg(self):
+		expected_sum_x = 5
+		expected_sum_y = 13
+		expected_sum_z = -4
+		v1 = Vector3dm(-5,-13,4,"c")
+		v3 = v1.neg()
+		x,y,z = v3.vals
+		self.assertTrue(compare_close(x,expected_sum_x),"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
+		self.assertTrue(compare_close(y,expected_sum_y),"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
+		self.assertTrue(compare_close(z,expected_sum_z),"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
 
 if __name__ == '__main__':
 	unittest.main()
