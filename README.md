@@ -31,7 +31,6 @@ v = vector3dm(x,y,z,"c")
 v2 = vector3dm(r,theta,phi,"s") # distance, azimuth, polar (as in mathematics)
 v3 = v.add(v2) # sum of v and v2
 v4 = v.sub(v2) # self - v2
-
 d = v.magnitude(v2) # distance from v to v2
 v_c = v2.convert_to_cartesian()
 v_s = v.convert_to_spherical()
@@ -50,18 +49,14 @@ scalar = v.dot(v2)
 scalar = v.inner(v2) # same as dot
 v8 = v.point_at_that(v2) # vector from v to v2 where v and v2 are both positions
 v9 = v.where_from_here (v8) # gets the position of the point by applying the vector v8 to v -- inverse of point_at_that()
-
-
-
-
 ```
 
 ## Contributing
 
-There are lots of these things out there. I only did my own because of the dual coordinate trick (seems like you have to switch back and forth to do anything so why not hide that if you can?). 
-I would say that I need more tests and, as of this writting, there is some broken funcaitonality so if you have a mind to contribute, please ping me. 
-
+I'm pretty much done but let me know if you think there's something more that would be useful. 
+ * More tests are always welcome. 
+ * There's a numpy_to_vector3dm so there should probably be a vector3dm_to_numpy
+ 
 ## License
 
-[Apache](https://www.apache.org/licenses/LICENSE-2.0)
-
+[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
