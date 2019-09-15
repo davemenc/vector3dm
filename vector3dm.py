@@ -9,12 +9,13 @@ def numpy_to_vector3dm(np_array):
 	return Vector3dm(np_array[0],np_array[1],np_array[2],"c")
 	
 class Vector3dm:
-	def __init__(self,a,b,c,type):
-		assert type == "s" or type == "c","Expects spherical (s) or cartesian (c); vector is type {}".format(type)
-
+	def __init__(self,r,theta,phi,type):
 		# in spherical the order is r,theta,phi
-		# in cartesian it's x,yz
-		self.vals = [float(a),float(b),float(c)]
+		# in cartesian it's x,y,z
+		# params are named for spherical because that way you can name them in the call
+		# for type, "s"==spherical, "c"==cartesian
+		assert type == "s" or type == "c","Expects spherical (s) or cartesian (c); vector is type {}".format(type)
+		self.vals = [float(r),float(theta),float(phi)]
 		self.type = type # s==spherical, c==cartesian
 
 	def __array__(self):
@@ -31,7 +32,19 @@ class Vector3dm:
 			return "r:{}, theta:{}, phi:{},  type s".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
 		else:
 			return "{},{},{}, type: {} (type may be invalid)".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2),self.type)
-	
+	# retrieval methods
+	def get_x(self):
+		return self.convert_to_cartesian().vals[0]
+	def get_y(self):
+		return self.convert_to_cartesian().vals[1]
+	def get_z(self):
+		return self.convert_to_cartesian().vals[2]
+	def get_r(self):
+		return self.convert_to_spherical().vals[0]
+	def get_theta(self):
+		return self.convert_to_spherical().vals[1]
+	def get_phi(self):
+		return self.convert_to_spherical().vals[2]
 	def convert_to_cartesian(self):
 		# converts a spherical vector to a cartesian vector
 		# input: vector (self) of type spherical
@@ -103,7 +116,7 @@ class Vector3dm:
 	def sub(self,v): # self - v
 		# subtracs v from self
 		# input: self and another vector of any type
-		# output a cartesion vector which is self-v
+		# output: a cartesion vector which is self-v
 		x1,y1,z1 = self.convert_to_cartesian().vals
 		x2,y2,z2 = v.convert_to_cartesian().vals
 	
@@ -129,47 +142,31 @@ class Vector3dm:
 		v3 = np.cross(v1,v2)
 		print("cross",type(v3),v3)
 		return Vector3dm(np.cross(v1, v2),"c")
-
-	def inner(self,v):
+	
+	def dot(self,v):
+		# calculates the dot product of two vectors
+		# input: self vector & another vector v
+		# output: scalar dot product of the two vectors
 		v1 = self.convert_to_cartesian()
 		v2 = v.convert_to_cartesian()
-		v3 = np.cross(v1,v2)
-		print("inner",type(v3),v3)
-		return Vector3dm(np.inner(v1, v2),"c")
-
-
-
-if __name__ == "__main__":
-	print()
-	print("______________________________________________________________________________________________________________")
-	print("______________________________________________________________________________________________________________")
-	v1 = Vector3dm(0,0,0)
-	v2 = Vector3dm(0,0,0,"c")
-	v3 = Vector3dm(0,100,0,"c")
-	v4 = Vector3dm(100,0,0,"c")
-	v5 = Vector3dm(0,0,100,"c")
-	v6 = Vector3dm(100,0,100,"c")
-	v7 = Vector3dm(100,100,0,"c")
-	v8 = Vector3dm(100,100,100,"c")
-	#v9 = Vector3dm(100,100,100,"wrong")
-	v9 = Vector3dm(-100,math.pi,math.pi,"s")
-	va = Vector3dm(100,math.pi,math.pi,"s")
+		return v1.vals[0]*v2.vals[0]+v1.vals[1]*v2.vals[1]+v1.vals[2]*v2.vals[2]
+		
+	def inner(self,v):
+		return self.dot(v)
 	
-#	print(v7.cross(v8))
-	#tests
-	print(1,v1)
-	print(2,v2)
-	print(3,v3)
-	print(4,v4)
-	print(5,v5)
-	print(6,v6)
-	print(7,v7)
-	print(8,v8)
-	print(9,v9)
-	print("a",va)
-	print("np",np.array(v1))
+	def point_at_that(self,v):
+		# creates  vector from here to there
+		# input: self (my location)  and a vector (location of destination or "that")
+		# output: a vector that points from self to the vector
+		v1 = v.sub(self)
+		return v1.convert_to_spherical()
+	
+	def where_from_here(self,v):
+		# given a vector from here to a point, finds the location of the point
+		# input: self (my location) and a vector (direction and distance to a point)
+		# output: a vector that represents the location of hte destination
+		v1 = self.add(v)
+		return v1.convert_to_spherical()
+		
 
-
-	print
-	print("________ADD_____________")
-	print("add",v3,v4,v3.add(v4))
+		
