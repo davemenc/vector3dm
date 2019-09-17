@@ -229,6 +229,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(x,y,z,"c")
 		res_x = v1.get_x()
 		self.assertTrue(compare_close(res_x,x),"get_x bad result: is {} should be {}".format(res_x,x))
+	
 	def test_get_y(self):
 		x = 1
 		y = 2
@@ -236,6 +237,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(x,y,z,"c")
 		res_y = v1.get_y()
 		self.assertTrue(compare_close(res_y,y),"get_y bad result: is {} should be {}".format(res_y,y))
+	
 	def test_get_z(self):
 		x = 1
 		y = 2
@@ -243,6 +245,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(z,y,z,"c")
 		res_z = v1.get_z()
 		self.assertTrue(compare_close(res_z,z),"get_z bad result: is {} should be {}".format(res_z,z))
+	
 	def test_get_r(self):
 		r = 1
 		theta = 2
@@ -250,6 +253,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_r = v1.get_r()
 		self.assertTrue(compare_close(res_r,r),"get_r bad result: is {} should be {}".format(res_r,r))
+	
 	def test_get_theta(self):
 		r = 1
 		theta = 2
@@ -257,6 +261,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_theta = v1.get_theta()
 		self.assertTrue(compare_close(res_theta,theta),"get_r bad result: is {} should be {}".format(res_theta,theta))
+	
 	def test_get_phi(self):
 		r = 1
 		theta = 2
@@ -264,6 +269,17 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_phi = v1.get_phi()
 		self.assertTrue(compare_close(res_phi,phi),"get_phi bad result: is {} should be {}".format(res_phi,phi))
+	
+	def test_zero_vector(self):
+		zero_vector = Vector3dm.zero_vector()
+		vx = zero_vector.get_x()
+		vy = zero_vector.get_y()
+		vz = zero_vector.get_z()
+		vr = zero_vector.get_r()
+		self.assertTrue(compare_close(vx,0.0),"test_zero_vector bad result: is {} should be {}".format(vx,0.0))
+		self.assertTrue(compare_close(vy,0.0),"test_zero_vector bad result: is {} should be {}".format(vy,0.0))
+		self.assertTrue(compare_close(vz,0.0),"test_zero_vector bad result: is {} should be {}".format(vz,0.0))
+		self.assertTrue(compare_close(vr,0.0),"test_zero_vector bad result: is {} should be {}".format(vr,0.0))
 		
 if __name__ == '__main__':
 	unittest.main()

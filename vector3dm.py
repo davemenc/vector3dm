@@ -32,6 +32,11 @@ class Vector3dm:
 			return "r:{}, theta:{}, phi:{},  type s".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2))
 		else:
 			return "{},{},{}, type: {} (type may be invalid)".format(round(self.vals[0],2),round(self.vals[1],2),round(self.vals[2],2),self.type)
+
+	# init methods
+	def zero_vector():
+		return Vector3dm(0,0,0,"c")
+		
 	# retrieval methods
 	def get_x(self):
 		return self.convert_to_cartesian().vals[0]
@@ -49,7 +54,6 @@ class Vector3dm:
 		# converts a spherical vector to a cartesian vector
 		# input: vector (self) of type spherical
 		# ouput: copy of vector converted to cartesian coordinates
-		
 		if self.type == "c":
 			return copy.copy(self)
 		assert self.type=="s","Expects spherical (s) or cartesian (c); vector is type {}".format(self.type)
@@ -167,6 +171,6 @@ class Vector3dm:
 		# output: a vector that represents the location of hte destination
 		v1 = self.add(v)
 		return v1.convert_to_spherical()
-		
 
-		
+if __name__ == "__main__":
+	print(Vector3dm.zero_vector())
