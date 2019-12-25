@@ -11,7 +11,6 @@ Vector3dm is dependent on the math, copy, and numpy libraries.
 It is not part of pypy (yet? ever?) so put it in the tree and import it. The correct syntax would be 
 ```from vector3dm import Vector3dm```
 
-
 ## Usage
 
 It's pretty much like every other 3d vector library except for 2 factors: 
@@ -35,13 +34,25 @@ d = v.magnitude(v2) # distance from v to v2
 v_c = v2.convert_to_cartesian()
 v_s = v.convert_to_spherical()
 v4 = numpy_to_vector3dm(np_array)
-#retrival functions: convert to correct type and get it from the right place
+
+#retrieval functions: convert to correct type and get it from the right place
 x = v.get_x()
 y = v.get_y()
 z = v.get_z()
 r = v.get_r()
 theta = v.get_theta()
 phi = v.get_phi()
+
+#set functions: make sure the right element gets set
+v.set_x(10)
+v.set_y(10)
+v.set_z(10)
+v.set_r(10)
+v.set_theta(10)
+v.set_phi(10)
+
+
+#various math functions
 v5 = v.mult(5) 
 v6 = v.neg()
 v7 = v.cros(v2)
@@ -49,6 +60,7 @@ scalar = v.dot(v2)
 scalar = v.inner(v2) # same as dot
 v8 = v.point_at_that(v2) # vector from v to v2 where v and v2 are both positions
 v9 = v.where_from_here (v8) # gets the position of the point by applying the vector v8 to v -- inverse of point_at_that()
+vzero = Vector3dm.zero_vector() # creates a vector of zero length
 ```
 
 ## Contributing

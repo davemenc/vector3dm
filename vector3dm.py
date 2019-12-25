@@ -50,6 +50,46 @@ class Vector3dm:
 		return self.convert_to_spherical().vals[1]
 	def get_phi(self):
 		return self.convert_to_spherical().vals[2]
+	
+	# set methods
+	def set_r(self,r):
+		v = self.convert_to_spherical()
+		v.vals[0] = float(r)
+		self.vals = v.vals
+		self.type = v.type
+
+	def set_theta(self,theta):
+		v = self.convert_to_spherical()
+		v.vals[1] = float(theta)
+		self.vals = v.vals
+		self.type = v.type
+		
+	def set_phi(self,phi):
+		v = self.convert_to_spherical()
+		v.vals[2] = float(phi)
+		self.vals = v.vals
+		self.type = v.type
+
+	def set_x(self,x):
+		v = self.convert_to_cartesian()
+		v.vals[0] = float(x)
+		self.vals = v.vals
+		self.type = v.type
+
+	def set_y(self,y):
+		v = self.convert_to_cartesian()
+		v.vals[1] = float(y)
+		self.vals = v.vals
+		self.type = v.type
+
+	def set_z(self,z):
+		v = self.convert_to_cartesian()
+		v.vals[2] = float(z)
+		self.vals = v.vals
+		self.type = v.type
+		
+	
+	# conversion methods
 	def convert_to_cartesian(self):
 		# converts a spherical vector to a cartesian vector
 		# input: vector (self) of type spherical
@@ -90,7 +130,7 @@ class Vector3dm:
 		x,y,z = self.vals
 		return math.sqrt(x**2 + y**2 + z**2)
 
-	def magnitude(self,v=None):
+	def magnitude(self,v=None): 
 		# Gets distance from self to v or from self to origin
 		# input: any 1 or 2 vectors
 		# output: float scalar
@@ -109,7 +149,6 @@ class Vector3dm:
 		x2,y2,z2 = v2.vals
 		return math.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
 		
-	
 	def add(self,v):
 		# adds two vectors
 		# input: self and another vector of any type
@@ -122,8 +161,7 @@ class Vector3dm:
 		# input: self and another vector of any type
 		# output: a cartesion vector which is self-v
 		x1,y1,z1 = self.convert_to_cartesian().vals
-		x2,y2,z2 = v.convert_to_cartesian().vals
-	
+		x2,y2,z2 = v.convert_to_cartesian().vals	
 		return Vector3dm(x1-x2,y1-y2,z1-z2,"c")
 
 	def mult(self,number):
@@ -141,12 +179,17 @@ class Vector3dm:
 		return Vector3dm(-x,-y,-z,"c")
 
 	def cross(self,v):
-		v1 = self.convert_to_cartesian()
-		v2 = v.convert_to_cartesian()
-		v3 = np.cross(v1,v2)
-		print("cross",type(v3),v3)
-		return Vector3dm(np.cross(v1, v2),"c")
-	
+		#calculates the cross product of two vectors
+		# input: self vector & another vector v
+		# output: vector of right angle vector of 2 vectors: cross product
+		ax,ay,az = self.convert_to_cartesian().vals
+		bx,by,bz = v.convert_to_cartesian().vals
+		cx = ay*bz - az*by
+		cy = az*bx - ax*bz
+		cz = ax*by - ay*bx
+		vc = Vector3dm(cx,cy,cz,"c")
+		return vc  		
+			
 	def dot(self,v):
 		# calculates the dot product of two vectors
 		# input: self vector & another vector v
@@ -172,5 +215,12 @@ class Vector3dm:
 		v1 = self.add(v)
 		return v1.convert_to_spherical()
 
+	def unit(self):
+		# given a vector, find the unit vector (that is, the vector with magnitude 1)
+		# input self
+		# output: self but with magnitude 1
+		v = self.convert_to_spherical()
+		v.set_r(1.0)
+		return v
 if __name__ == "__main__":
 	print(Vector3dm.zero_vector())
