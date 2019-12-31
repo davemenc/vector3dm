@@ -1,4 +1,3 @@
-import numpy as np
 import math
 import copy
 
@@ -7,6 +6,12 @@ def numpy_to_vector3dm(np_array):
 	# input: numpy array (3 el, cartesian values)
 	# output: a vector3dm of catesian type
 	return Vector3dm(np_array[0],np_array[1],np_array[2],"c")
+
+def vector_to_list(v):
+	# converts vector3dm to a simple list which can then be converted to numpy arry
+	# input: vector3dm vector
+	# output: a list with 3 elements, x,y, z
+	return v.convert_to_cartesian().vals
 	
 class Vector3dm:
 	def __init__(self,r,theta,phi,type):
@@ -87,7 +92,6 @@ class Vector3dm:
 		v.vals[2] = float(z)
 		self.vals = v.vals
 		self.type = v.type
-		
 	
 	# conversion methods
 	def convert_to_cartesian(self):
@@ -153,9 +157,12 @@ class Vector3dm:
 		# adds two vectors
 		# input: self and another vector of any type
 		# output a vector which is the sum of the two 
-		np_vect = np.add(self.convert_to_cartesian(), v.convert_to_cartesian())
-		return numpy_to_vector3dm(np_vect)
-	
+		#np_vect = np.add(self.convert_to_cartesian(), v.convert_to_cartesian())
+		#return numpy_to_vector3dm(np_vect)
+		result = Vector3dm.zero_vector()
+		result.vals = v.vals[0]+self.vals[0],v.vals[1]+self.vals[1],v.vals[2]+self.vals[2]
+		return result
+		
 	def sub(self,v): # self - v
 		# subtracs v from self
 		# input: self and another vector of any type
