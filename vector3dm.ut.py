@@ -11,7 +11,6 @@ class TestVector3dm(unittest.TestCase):
 		phi = math.pi/6
 		
 		v = Vector3dm(r,theta,phi,"s")
-		#print("s2c start:",v)
 	
 		# the expected answer
 		tx = 2*math.sqrt(2)
@@ -20,7 +19,6 @@ class TestVector3dm(unittest.TestCase):
 		
 		v2 =  v.convert_to_cartesian()
 		x,y,z = v2.vals
-		#print("s2c result:",x,y,z)
 		self.assertAlmostEqual(x,tx,6,"s2c bad x: is {} should be {}".format(x,tx))
 		self.assertAlmostEqual(y,ty,6,"s2c bad y: is {} should be {}".format(y,ty))
 		self.assertAlmostEqual(z,tz,6,"s2c bad z: is {} should be {}".format(z,tz))
@@ -29,7 +27,8 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,tx,6,"s2c #2 bad x: is {} should be {}".format(x,tx))
 		self.assertAlmostEqual(y,ty,6,"s2c #2 bad y: is {} should be {}".format(y,ty))
 		self.assertAlmostEqual(z,tz,6,"s2c #2 bad z: is {} should be {}".format(z,tz))
-		
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 
 
 	def test_convert_to_spherical(self):
@@ -38,7 +37,7 @@ class TestVector3dm(unittest.TestCase):
 		z = -4
 		
 		v = Vector3dm(x,y,z,"c")
-		#print("c2s start:",v)
+
 		
 		# the expected answer
 		tr = 8.0
@@ -47,16 +46,18 @@ class TestVector3dm(unittest.TestCase):
 		
 		v2 = v.convert_to_spherical()
 		r,theta,phi = v2.vals
-		#print("c2s result:",r,theta,phi)
+
 		self.assertAlmostEqual(r,tr,6,"c2s bad r: is {} should be {}".format(r,tr))
 		self.assertAlmostEqual(theta,ttheta,6,"c2s bad theta: is {} should be {}".format(theta,ttheta))
 		self.assertAlmostEqual(phi,tphi,6,"c2s bad phi: is {} should be {}".format(phi,tphi))
 		
 		r,theta,phi = v2.convert_to_spherical().vals # should do nothing
-		#print("c2s result:",r,theta,phi)
+
 		self.assertAlmostEqual(r,tr,6,"c2s #2 bad r: is {} should be {}".format(r,tr))
 		self.assertAlmostEqual(theta,ttheta,6,"c2s #2 bad theta: is {} should be {}".format(theta,ttheta))
 		self.assertAlmostEqual(phi,tphi,6,"c2s bad #2 phi: is {} should be {}".format(phi,tphi))
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 
 	def test_conversion_inversion_c2s_s2c(self):
 		tx = 2*math.sqrt(3)
@@ -64,11 +65,7 @@ class TestVector3dm(unittest.TestCase):
 		tz = -4
 
 		v = Vector3dm(tx,ty,tz,"c")
-		#print("inversion",v)
-		#print(v.convert_to_spherical())
-		#print(v.convert_to_spherical().convert_to_cartesian())
 		x,y,z = v.convert_to_spherical().convert_to_cartesian().vals
-		#print(x,y,z)
 		self.assertAlmostEqual(x,tx,6,"inversion1 bad x: is {} should be {}".format(x,tx))
 		self.assertAlmostEqual(y,ty,6,"inversion1 bad y: is {} should be {}".format(y,ty))
 		self.assertAlmostEqual(z,tz,6,"inversion1 bad z: is {} should be {}".format(z,tz))
@@ -81,6 +78,7 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(r,tr,6,"inversion2 #2 bad r: is {} should be {}".format(r,tr))
 		self.assertAlmostEqual(theta,ttheta,6,"inversion2 #2 bad theta: is {} should be {}".format(theta,ttheta))
 		self.assertAlmostEqual(phi,tphi,6,"inversion2 bad #2 phi: is {} should be {}".format(phi,tphi))
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 		
 	def test_magnitude(self):
 		expected_mag = 18.78829423
@@ -100,14 +98,16 @@ class TestVector3dm(unittest.TestCase):
 		
 		mag = v1.magnitude()
 		self.assertAlmostEqual(mag,expected_mag,6,"magnitude3 bad mag: is {} should be {}".format(mag,expected_mag))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 
 	def test_origin_distance(self):
 		expected_dist = 1.7320508075688772935274463415059
 		v1 = Vector3dm(-1,1,1,"c")	
-		#print("test_origin_distance",expected_dist,v1)
+
 		dist = v1.origin_distance()
-		#print("dist",dist,"expected",expected_dist)
 		self.assertAlmostEqual(dist,expected_dist,6,"origindist bad distance: is {} should be {}".format(dist,expected_dist))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_add(self):
 		expected_sum_x = -6
@@ -120,6 +120,9 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,expected_sum_x,6,"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
 		self.assertAlmostEqual(y,expected_sum_y,6,"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
 		self.assertAlmostEqual(z,expected_sum_z,6,"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v3.vals),type([]),"test changed vals type")
 
 	def test_sub(self):
 		expected_sum_x = 10
@@ -132,6 +135,9 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,expected_sum_x,6,"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
 		self.assertAlmostEqual(y,expected_sum_y,6,"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
 		self.assertAlmostEqual(z,expected_sum_z,6,"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v3.vals),type([]),"test changed vals type")
 
 	def test_neg(self):
 		expected_sum_x = 5
@@ -143,6 +149,8 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,expected_sum_x,6,"origindist bad distance: is {} should be {}".format(x,expected_sum_x))
 		self.assertAlmostEqual(y,expected_sum_y,6,"origindist bad distance: is {} should be {}".format(y,expected_sum_y))
 		self.assertAlmostEqual(z,expected_sum_z,6,"origindist bad distance: is {} should be {}".format(z,expected_sum_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v3.vals),type([]),"test changed vals type")
 
 	def test_mult(self):
 		v = Vector3dm(1,1,1,"c")
@@ -151,6 +159,7 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,6.0,6,"mult x: is {} should be {}".format(x,6.0))
 		self.assertAlmostEqual(y,6.0,6,"mult y: is {} should be {}".format(y,6.0))
 		self.assertAlmostEqual(z,6.0,6,"mult z: is {} should be {}".format(z,6.0))
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 		
 		r = v_mult.get_r()
 		self.assertAlmostEqual(r, 10.392304845413264,6,"mult r: is {} should be {}".format(r,6.0))
@@ -175,6 +184,9 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(rx,exp_x,6,"where_from_here x bad result: is {} should be {}".format(rx,exp_x))
 		self.assertAlmostEqual(ry,exp_y,6,"where_from_here y bad result: is {} should be {}".format(ry,exp_y))
 		self.assertAlmostEqual(rz,exp_z,6,"where_from_here z bad result: is {} should be {}".format(rz,exp_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
+		self.assertEqual(type(res_v.vals),type([]),"test changed vals type")
 
 	def test_dot(self):
 		# got example from https://chortle.ccsu.edu/VectorLessons/vch07/vch07_14.html
@@ -189,6 +201,8 @@ class TestVector3dm(unittest.TestCase):
 		v2 = Vector3dm(x2,y2,z2,"c")
 		dot = v1.dot(v2)
 		self.assertAlmostEqual(dot,expected_dot,6,"Dot bad result: is {} should be {}".format(dot,expected_dot))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 		
 	def test_point_at_that(self):
 		#example from http://mathonline.wikidot.com/determining-a-vector-given-two-points
@@ -210,8 +224,9 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(rx,exp_x,6,"point_at_that x bad result: is {} should be {}".format(rx,exp_x))
 		self.assertAlmostEqual(ry,exp_y,6,"point_at_that y bad result: is {} should be {}".format(ry,exp_y))
 		self.assertAlmostEqual(rz,exp_z,6,"point_at_that z bad result: is {} should be {}".format(rz,exp_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 		
-	
 	def test_inner(self):
 		expected_dot = -14.0
 		x1 = -1
@@ -224,6 +239,8 @@ class TestVector3dm(unittest.TestCase):
 		v2 = Vector3dm(x2,y2,z2,"c")
 		dot = v1.dot(v2)
 		self.assertAlmostEqual(dot,expected_dot,6,"Dot bad result: is {} should be {}".format(dot,expected_dot))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 		
 	def test_get_x(self):
 		x = 1
@@ -232,6 +249,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(x,y,z,"c")
 		res_x = v1.get_x()
 		self.assertAlmostEqual(res_x,x,6,"get_x bad result: is {} should be {}".format(res_x,x))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_get_y(self):
 		x = 1
@@ -240,6 +258,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(x,y,z,"c")
 		res_y = v1.get_y()
 		self.assertAlmostEqual(res_y,y,6,"get_y bad result: is {} should be {}".format(res_y,y))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_get_z(self):
 		x = 1
@@ -248,6 +267,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(z,y,z,"c")
 		res_z = v1.get_z()
 		self.assertAlmostEqual(res_z,z,6,"get_z bad result: is {} should be {}".format(res_z,z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_get_r(self):
 		r = 1
@@ -256,6 +276,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_r = v1.get_r()
 		self.assertAlmostEqual(res_r,r,6,"get_r bad result: is {} should be {}".format(res_r,r))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_get_theta(self):
 		r = 1
@@ -264,6 +285,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_theta = v1.get_theta()
 		self.assertAlmostEqual(res_theta,theta,6,"get_r bad result: is {} should be {}".format(res_theta,theta))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 	
 	def test_get_phi(self):
 		r = 1
@@ -272,6 +294,7 @@ class TestVector3dm(unittest.TestCase):
 		v1 = Vector3dm(r,theta,phi,"s")
 		res_phi = v1.get_phi()
 		self.assertAlmostEqual(res_phi,phi,6,"get_phi bad result: is {} should be {}".format(res_phi,phi))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
 
 	def test_set_phi(self):
 		r = 1
@@ -281,6 +304,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_phi(10)
 		phi = v.get_phi()
 		self.assertAlmostEqual(10,phi,6,"set_phi bad result: is {} should be {}".format(phi,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 
 	def test_set_theta(self):
 		r = 1
@@ -290,6 +314,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_theta(10)
 		theta = v.get_theta()
 		self.assertAlmostEqual(10,theta,6,"set_phi bad result: is {} should be {}".format(theta,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 	
 	def test_set_r(self):
 		r = 1
@@ -299,6 +324,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_r(10)
 		r = v.get_r()
 		self.assertAlmostEqual(10,r,6,"set_phi bad result: is {} should be {}".format(r,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 
 	def test_set_x(self):
 		x = 1
@@ -308,6 +334,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_x(10)
 		x = v.get_x()
 		self.assertAlmostEqual(10,x,6,"set_x bad result: is {} should be {}".format(x,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 
 	def test_set_y(self):
 		x = 1
@@ -317,6 +344,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_y(10)
 		y = v.get_y()
 		self.assertAlmostEqual(10,y,6,"set_y bad result: is {} should be {}".format(y,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 
 	def test_set_z(self):
 		x = 1
@@ -326,6 +354,7 @@ class TestVector3dm(unittest.TestCase):
 		v.set_z(10)
 		z = v.get_z()
 		self.assertAlmostEqual(10,z,6,"set_z bad result: is {} should be {}".format(z,10))		
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 	
 	def test_zero_vector(self):
 		zero_vector = Vector3dm.zero_vector()
@@ -337,6 +366,7 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(vy,0.0,6,"test_zero_vector bad result: is {} should be {}".format(vy,0.0))
 		self.assertAlmostEqual(vz,0.0,6,"test_zero_vector bad result: is {} should be {}".format(vz,0.0))
 		self.assertAlmostEqual(vr,0.0,6,"test_zero_vector bad result: is {} should be {}".format(vr,0.0))
+		self.assertEqual(type(zero_vector.vals),type([]),"test changed vals type")
 
 	def test_cross_product(self):
 		v1 = Vector3dm(2,3,4,"c")
@@ -351,6 +381,8 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,r_x,6,"test_cross bad result: is {} should be {}".format(x,r_x))
 		self.assertAlmostEqual(y,r_y,6,"test_cross bad result: is {} should be {}".format(y,r_y))
 		self.assertAlmostEqual(z,r_z,6,"test_cross bad result: is {} should be {}".format(z,r_z))
+		self.assertEqual(type(v1.vals),type([]),"test changed vals type")
+		self.assertEqual(type(v2.vals),type([]),"test changed vals type")
 	
 	def test_unit_vector(self):
 		v = Vector3dm(12,-3,-4,"c").unit()
@@ -361,6 +393,7 @@ class TestVector3dm(unittest.TestCase):
 		self.assertAlmostEqual(x,r_x,6,"test_unit bad result: is {} should be {}".format(x,r_x))
 		self.assertAlmostEqual(y,r_y,6,"test_unit bad result: is {} should be {}".format(y,r_y))
 		self.assertAlmostEqual(z,r_z,6,"test_unit bad result: is {} should be {}".format(z,r_z))
+		self.assertEqual(type(v.vals),type([]),"test changed vals type")
 		
 	
 if __name__ == '__main__':

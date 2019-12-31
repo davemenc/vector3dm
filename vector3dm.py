@@ -59,38 +59,44 @@ class Vector3dm:
 	# set methods
 	def set_r(self,r):
 		v = self.convert_to_spherical()
-		v.vals[0] = float(r)
-		self.vals = v.vals
+		self.vals[0] = float(r)
+		self.vals[1] = v.vals[1]
+		self.vals[2] = v.vals[2]
 		self.type = v.type
 
 	def set_theta(self,theta):
 		v = self.convert_to_spherical()
-		v.vals[1] = float(theta)
-		self.vals = v.vals
+		self.vals[0] = v.vals[0]
+		self.vals[1] = float(theta)
+		self.vals[2] = v.vals[2]
 		self.type = v.type
 		
 	def set_phi(self,phi):
 		v = self.convert_to_spherical()
-		v.vals[2] = float(phi)
-		self.vals = v.vals
+		self.vals[0] = v.vals[0]
+		self.vals[1] = v.vals[1]
+		self.vals[2] = float(phi)
 		self.type = v.type
 
 	def set_x(self,x):
 		v = self.convert_to_cartesian()
-		v.vals[0] = float(x)
-		self.vals = v.vals
+		self.vals[1] = v.vals[1]
+		self.vals[2] = v.vals[2]
+		self.vals[0] = float(x)
 		self.type = v.type
 
 	def set_y(self,y):
 		v = self.convert_to_cartesian()
-		v.vals[1] = float(y)
-		self.vals = v.vals
+		self.vals[0] = v.vals[0]
+		self.vals[1] = float(y)
+		self.vals[2] = v.vals[2]
 		self.type = v.type
 
 	def set_z(self,z):
 		v = self.convert_to_cartesian()
-		v.vals[2] = float(z)
-		self.vals = v.vals
+		self.vals[0] = v.vals[0]
+		self.vals[1] = v.vals[1]
+		self.vals[2] = float(z)
 		self.type = v.type
 	
 	# conversion methods
@@ -102,7 +108,6 @@ class Vector3dm:
 			return copy.copy(self)
 		assert self.type=="s","Expects spherical (s) or cartesian (c); vector is type {}".format(self.type)
 		r,theta,phi = self.vals
-		#print("s2c: r",r,"theta",theta,"phi",phi)
 		x = r * math.sin(phi) * math.cos (theta)
 		y = r * math.sin(phi) * math.sin (theta)
 		z = r * math.cos(phi)
@@ -116,7 +121,6 @@ class Vector3dm:
 			return copy.copy(self)
 		assert self.type=="c","Expects spherical (s) or cartesian (c); vector is type {}".format(self.type)
 		x,y,z = self.vals
-		#print(" in c2s: x",x,"y",y,"z",z)
 		r = self.origin_distance()
 		if r==0.0:
 			r=0.000000001
@@ -160,7 +164,9 @@ class Vector3dm:
 		#np_vect = np.add(self.convert_to_cartesian(), v.convert_to_cartesian())
 		#return numpy_to_vector3dm(np_vect)
 		result = Vector3dm.zero_vector()
-		result.vals = v.vals[0]+self.vals[0],v.vals[1]+self.vals[1],v.vals[2]+self.vals[2]
+		result.vals[0] = v.vals[0]+self.vals[0]
+		result.vals[1] = v.vals[1]+self.vals[1]
+		result.vals[2] = v.vals[2]+self.vals[2]		
 		return result
 		
 	def sub(self,v): # self - v
