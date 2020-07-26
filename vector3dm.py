@@ -163,10 +163,12 @@ class Vector3dm:
 		# output a vector which is the sum of the two 
 		#np_vect = np.add(self.convert_to_cartesian(), v.convert_to_cartesian())
 		#return numpy_to_vector3dm(np_vect)
-		result = Vector3dm.zero_vector()
-		result.vals[0] = v.vals[0]+self.vals[0]
-		result.vals[1] = v.vals[1]+self.vals[1]
-		result.vals[2] = v.vals[2]+self.vals[2]		
+		result = Vector3dm.zero_vector().convert_to_cartesian()
+		v1 = v.convert_to_cartesian()
+		v2 = self.convert_to_cartesian()
+		result.vals[0] = v1.vals[0]+v2.vals[0]
+		result.vals[1] = v1.vals[1]+v2.vals[1]
+		result.vals[2] = v1.vals[2]+v2.vals[2]		
 		return result
 		
 	def sub(self,v): # self - v
